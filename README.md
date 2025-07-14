@@ -1,0 +1,1 @@
+# QRFolio.GQL
