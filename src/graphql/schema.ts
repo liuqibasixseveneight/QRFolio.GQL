@@ -1,7 +1,18 @@
-import { typeDefs } from './typeDefs';
-import { resolvers } from './resolvers';
+import { mergeTypeDefs, mergeResolvers } from '@graphql-tools/merge';
 
-export const schema = {
-  typeDefs,
-  resolvers,
-};
+import { userMutations, userQueries, userTypeDefs } from './user';
+
+const typeDefs = mergeTypeDefs([userTypeDefs]);
+
+const resolvers = mergeResolvers([
+  {
+    Query: {
+      ...userQueries,
+    },
+    Mutation: {
+      ...userMutations,
+    },
+  },
+]);
+
+export const schema = { typeDefs, resolvers };
