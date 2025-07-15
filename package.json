@@ -6,13 +6,16 @@
   "main": "index.js",
   "scripts": {
     "dev": "ts-node-dev --respawn src/index.ts",
-    "build": "tsc",
     "start": "node dist/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "prisma:studio": "prisma studio",
-    "prisma:db:push": "prisma db push",
-    "prisma:generate": "prisma generate",
-    "prisma:migrate:dev": "prisma migrate dev"
+    "build": "tsc",
+    "db:push": "prisma db push",
+    "db:migrate": "prisma migrate dev",
+    "db:studio": "prisma studio",
+    "db:generate": "prisma generate",
+    "studio": "npm run db:studio",
+    "sync": "npm run db:push && npm run db:generate",
+    "apollo:studio": "echo 'Open https://studio.apollographql.com/dev to connect to your local server for Apollo Studio.'",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "license": "ISC",
