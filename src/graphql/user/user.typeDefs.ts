@@ -9,14 +9,17 @@ export const userTypeDefs = gql`
     Unique identifier (UUID) of the user
     """
     id: ID!
+
     """
     Unique email address of the user
     """
     email: String!
+
     """
     Optional display name of the user
     """
     name: String
+
     """
     Timestamp for when the user account was created
     """
