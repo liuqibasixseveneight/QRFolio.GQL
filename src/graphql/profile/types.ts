@@ -21,14 +21,27 @@ export type Language = {
   fluencyLevel: 'Beginner' | 'Intermediate' | 'Advanced' | 'Fluent' | 'Native';
 };
 
+export type PhoneNumber = {
+  countryCode: string;
+  dialCode: string;
+  number: string;
+  flag: string;
+};
+
+export type Availability =
+  | 'AVAILABLE'
+  | 'OPEN_TO_OPPORTUNITIES'
+  | 'NOT_AVAILABLE';
+
 export type CreateProfileArgs = {
   id: string;
   fullName: string;
-  phone?: string;
+  phone?: string | PhoneNumber;
   email: string;
   linkedin?: string;
   portfolio?: string;
   professionalSummary: string;
+  availability?: Availability;
   workExperience: WorkExperience[];
   education: Education[];
   languages: Language[];
@@ -37,11 +50,12 @@ export type CreateProfileArgs = {
 export type UpdateProfileArgs = {
   id: string;
   fullName?: string;
-  phone?: string;
+  phone?: string | PhoneNumber;
   email?: string;
   linkedin?: string;
   portfolio?: string;
   professionalSummary?: string;
+  availability?: Availability;
   workExperience?: WorkExperience[];
   education?: Education[];
   languages?: Language[];

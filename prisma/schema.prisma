@@ -23,11 +23,12 @@ model User {
 model Profile {
   id                  String   @id
   fullName            String
-  phone               String?  
+phone               Json?                           // Stores either structured phone object or legacy string
   email               String
   linkedin            String?  
   portfolio           String?  
   professionalSummary String
+  availability        String?
   workExperience      Json                          // stores array of workExperience objects
   education           Json                          // stores array of education objects
   languages           Json                          // stores array of language objects

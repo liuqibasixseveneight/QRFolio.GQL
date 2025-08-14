@@ -4,6 +4,40 @@ export const profileTypeDefs = gql`
   scalar JSON
 
   """
+  Represents a structured phone number with country information
+  """
+  type PhoneNumber {
+    """
+    Country code (e.g., "US", "CA")
+    """
+    countryCode: String!
+
+    """
+    International dialing code (e.g., "+1", "+44")
+    """
+    dialCode: String!
+
+    """
+    The actual phone number
+    """
+    number: String!
+
+    """
+    Country flag emoji or code
+    """
+    flag: String!
+  }
+
+  """
+  Represents the availability status of a professional
+  """
+  enum Availability {
+    AVAILABLE
+    OPEN_TO_OPPORTUNITIES
+    NOT_AVAILABLE
+  }
+
+  """
   Represents a user's profile containing resume and personal information
   """
   type Profile {
@@ -18,9 +52,9 @@ export const profileTypeDefs = gql`
     fullName: String!
 
     """
-    Optional phone number (numbers only expected)
+    Phone number - can be either a string (legacy) or structured object
     """
-    phone: String
+    phone: JSON
 
     """
     Email address
@@ -41,6 +75,11 @@ export const profileTypeDefs = gql`
     Professional summary text
     """
     professionalSummary: String!
+
+    """
+    Current availability status
+    """
+    availability: Availability
 
     """
     Array of work experience objects stored as JSON
@@ -82,11 +121,12 @@ export const profileTypeDefs = gql`
     createProfile(
       id: ID!
       fullName: String!
-      phone: String
+      phone: JSON
       email: String!
       linkedin: String
       portfolio: String
       professionalSummary: String!
+      availability: Availability
       workExperience: JSON!
       education: JSON!
       languages: JSON!
@@ -98,14 +138,25 @@ export const profileTypeDefs = gql`
     updateProfile(
       id: ID!
       fullName: String
-      phone: String
+      phone: JSON
       email: String
       linkedin: String
       portfolio: String
       professionalSummary: String
+      availability: Availability
       workExperience: JSON
       education: JSON
       languages: JSON
     ): Profile!
+  }
+
+  """
+  Input type for structured phone number
+  """
+  input PhoneNumberInput {
+    countryCode: String!
+    dialCode: String!
+    number: String!
+    flag: String!
   }
 `;
