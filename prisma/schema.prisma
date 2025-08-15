@@ -23,7 +23,7 @@ model User {
 model Profile {
   id                  String   @id
   fullName            String
-phone               Json?                           // Stores either structured phone object or legacy string
+  phone               Json?                         // Stores either structured phone object or legacy string
   email               String
   linkedin            String?  
   portfolio           String?  

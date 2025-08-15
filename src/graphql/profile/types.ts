@@ -28,10 +28,7 @@ export type PhoneNumber = {
   flag: string;
 };
 
-export type Availability =
-  | 'AVAILABLE'
-  | 'OPEN_TO_OPPORTUNITIES'
-  | 'NOT_AVAILABLE';
+export type Availability = 'available' | 'open' | 'unavailable';
 
 export type CreateProfileArgs = {
   id: string;

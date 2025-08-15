@@ -32,9 +32,9 @@ export const profileTypeDefs = gql`
   Represents the availability status of a professional
   """
   enum Availability {
-    AVAILABLE
-    OPEN_TO_OPPORTUNITIES
-    NOT_AVAILABLE
+    available
+    open
+    unavailable
   }
 
   """
