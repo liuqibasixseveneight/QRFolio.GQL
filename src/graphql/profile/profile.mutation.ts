@@ -15,6 +15,7 @@ export const profileMutations = {
         linkedin: args.linkedin,
         portfolio: args.portfolio,
         professionalSummary: args.professionalSummary,
+        availability: args.availability,
         workExperience: args.workExperience,
         education: args.education,
         languages: args.languages,
