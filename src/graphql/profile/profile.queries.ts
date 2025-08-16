@@ -4,7 +4,7 @@ const prisma = new PrismaClient();
 
 export const profileQueries = {
   profiles: async () => {
-    return await prisma.profile.findMany({
+    const profiles = await prisma.profile.findMany({
       select: {
         id: true,
         fullName: true,
@@ -18,12 +18,20 @@ export const profileQueries = {
         education: true,
         languages: true,
         createdAt: true,
+        updatedAt: true,
       },
     });
+
+    // Transform DateTime fields to ISO strings
+    return profiles.map((profile) => ({
+      ...profile,
+      createdAt: profile.createdAt.toISOString(),
+      updatedAt: profile.updatedAt.toISOString(),
+    }));
   },
 
   profile: async (_: any, args: { id: string }) => {
-    return await prisma.profile.findUnique({
+    const profile = await prisma.profile.findUnique({
       where: { id: args.id },
       select: {
         id: true,
@@ -38,7 +46,17 @@ export const profileQueries = {
         education: true,
         languages: true,
         createdAt: true,
+        updatedAt: true,
       },
     });
+
+    if (!profile) return null;
+
+    // Transform DateTime fields to ISO strings
+    return {
+      ...profile,
+      createdAt: profile.createdAt.toISOString(),
+      updatedAt: profile.updatedAt.toISOString(),
+    };
   },
 };

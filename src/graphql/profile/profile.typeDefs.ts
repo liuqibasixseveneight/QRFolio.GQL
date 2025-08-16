@@ -100,6 +100,11 @@ export const profileTypeDefs = gql`
     Timestamp when the profile was created
     """
     createdAt: String!
+
+    """
+    Timestamp when the profile was last updated
+    """
+    updatedAt: String!
   }
 
   type Query {

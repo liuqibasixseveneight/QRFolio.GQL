@@ -33,4 +33,5 @@ model Profile {
   education           Json                          // stores array of education objects
   languages           Json                          // stores array of language objects
   createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
 }
