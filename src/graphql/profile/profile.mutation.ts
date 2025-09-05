@@ -19,6 +19,7 @@ export const profileMutations = {
         workExperience: args.workExperience,
         education: args.education,
         languages: args.languages,
+        skills: args.skills,
       },
     });
   },
