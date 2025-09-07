@@ -21,6 +21,12 @@ export type Language = {
   fluencyLevel: 'Beginner' | 'Intermediate' | 'Advanced' | 'Fluent' | 'Native';
 };
 
+export type Skill = {
+  name: string;
+  level: 'Beginner' | 'Intermediate' | 'Advanced' | 'Expert';
+  category?: string;
+};
+
 export type PhoneNumber = {
   countryCode: string;
   dialCode: string;
@@ -42,6 +48,7 @@ export type CreateProfileArgs = {
   workExperience: WorkExperience[];
   education: Education[];
   languages: Language[];
+  skills?: Skill[];
 };
 
 export type UpdateProfileArgs = {
@@ -56,4 +63,5 @@ export type UpdateProfileArgs = {
   workExperience?: WorkExperience[];
   education?: Education[];
   languages?: Language[];
+  skills?: Skill[];
 };

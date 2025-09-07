@@ -97,9 +97,19 @@ export const profileTypeDefs = gql`
     languages: JSON!
 
     """
+    Array of skills objects stored as JSON
+    """
+    skills: JSON
+
+    """
     Timestamp when the profile was created
     """
     createdAt: String!
+
+    """
+    Timestamp when the profile was last updated
+    """
+    updatedAt: String!
   }
 
   type Query {
@@ -130,6 +140,7 @@ export const profileTypeDefs = gql`
       workExperience: JSON!
       education: JSON!
       languages: JSON!
+      skills: JSON
     ): Profile!
 
     """
@@ -147,6 +158,7 @@ export const profileTypeDefs = gql`
       workExperience: JSON
       education: JSON
       languages: JSON
+      skills: JSON
     ): Profile!
   }
 

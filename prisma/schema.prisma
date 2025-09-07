@@ -29,8 +29,10 @@ model Profile {
   portfolio           String?  
   professionalSummary String
   availability        String?
-  workExperience      Json                          // stores array of workExperience objects
-  education           Json                          // stores array of education objects
-  languages           Json                          // stores array of language objects
+  workExperience      Json                          // Stores array of workExperience objects
+  education           Json                          // Stores array of education objects
+  languages           Json                          // Stores array of language objects
+  skills              Json?                         // Stores array of skill strings
   createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
 }
