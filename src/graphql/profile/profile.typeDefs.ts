@@ -124,7 +124,7 @@ export const profileTypeDefs = gql`
     """
     Array of skill categories with nested skills
     """
-    skills: [SkillCategory!]
+    skills: [SkillCategory!]!
 
     """
     Timestamp when the profile was created
