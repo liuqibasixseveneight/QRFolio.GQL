@@ -38,6 +38,31 @@ export const profileTypeDefs = gql`
   }
 
   """
+  Represents a skill item
+  """
+  type Skill {
+    """
+    The skill name
+    """
+    skill: String
+  }
+
+  """
+  Represents a category of skills
+  """
+  type SkillCategory {
+    """
+    The title/category name for the skills
+    """
+    title: String!
+
+    """
+    Array of skills in this category
+    """
+    skills: [Skill!]!
+  }
+
+  """
   Represents a user's profile containing resume and personal information
   """
   type Profile {
@@ -97,9 +122,9 @@ export const profileTypeDefs = gql`
     languages: JSON!
 
     """
-    Array of skills objects stored as JSON
+    Array of skill categories with nested skills
     """
-    skills: JSON
+    skills: [SkillCategory!]!
 
     """
     Timestamp when the profile was created
@@ -140,7 +165,7 @@ export const profileTypeDefs = gql`
       workExperience: JSON!
       education: JSON!
       languages: JSON!
-      skills: JSON
+      skills: [SkillCategoryInput!]
     ): Profile!
 
     """
@@ -158,7 +183,7 @@ export const profileTypeDefs = gql`
       workExperience: JSON
       education: JSON
       languages: JSON
-      skills: JSON
+      skills: [SkillCategoryInput!]
     ): Profile!
   }
 
@@ -170,5 +195,20 @@ export const profileTypeDefs = gql`
     dialCode: String!
     number: String!
     flag: String!
+  }
+
+  """
+  Input type for a skill item
+  """
+  input SkillInput {
+    skill: String
+  }
+
+  """
+  Input type for a skill category
+  """
+  input SkillCategoryInput {
+    title: String!
+    skills: [SkillInput!]!
   }
 `;

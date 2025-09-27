@@ -32,7 +32,7 @@ model Profile {
   workExperience      Json                          // Stores array of workExperience objects
   education           Json                          // Stores array of education objects
   languages           Json                          // Stores array of language objects
-  skills              Json?                         // Stores array of skill strings
+  skills              Json?                         // Stores array of SkillCategory objects with nested skills
   createdAt           DateTime @default(now())
   updatedAt           DateTime @updatedAt
 }
