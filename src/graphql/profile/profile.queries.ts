@@ -35,9 +35,10 @@ export const profileQueries = {
         )}`
       );
 
-      // Transform DateTime fields to ISO strings
+      // Transform DateTime fields to ISO strings and skills structure
       return profiles.map((profile) => ({
         ...profile,
+        skills: profile.skills || [],
         createdAt: profile.createdAt.toISOString(),
         updatedAt: profile.updatedAt.toISOString(),
       }));
@@ -89,9 +90,10 @@ export const profileQueries = {
 
       if (!profile) return null;
 
-      // Transform DateTime fields to ISO strings
+      // Transform DateTime fields to ISO strings and skills structure
       return {
         ...profile,
+        skills: profile.skills || [],
         createdAt: profile.createdAt.toISOString(),
         updatedAt: profile.updatedAt.toISOString(),
       };
