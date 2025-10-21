@@ -10,7 +10,6 @@ export type WorkExperience = {
 export type Education = {
   schoolName: string;
   degree: string;
-  fieldOfStudy: string;
   dateFrom: string;
   dateTo: string;
   description: string;
