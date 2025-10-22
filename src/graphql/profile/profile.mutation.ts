@@ -56,6 +56,7 @@ export const profileMutations = {
         education: args.education,
         languages: args.languages,
         skills: args.skills,
+        accessLevel: args.accessLevel,
       },
     });
 

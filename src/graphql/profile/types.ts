@@ -38,6 +38,8 @@ export type PhoneNumber = {
 
 export type Availability = 'available' | 'open' | 'unavailable';
 
+export type AccessLevel = 'public' | 'private' | 'restricted';
+
 export type CreateProfileArgs = {
   id: string;
   fullName: string;
@@ -51,6 +53,7 @@ export type CreateProfileArgs = {
   education: Education[];
   languages: Language[];
   skills?: SkillCategory[];
+  accessLevel: AccessLevel;
 };
 
 export type UpdateProfileArgs = {
@@ -66,4 +69,5 @@ export type UpdateProfileArgs = {
   education?: Education[];
   languages?: Language[];
   skills?: SkillCategory[];
+  accessLevel?: AccessLevel;
 };

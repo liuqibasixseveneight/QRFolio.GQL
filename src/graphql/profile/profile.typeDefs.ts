@@ -38,6 +38,15 @@ export const profileTypeDefs = gql`
   }
 
   """
+  Represents the access level of a profile
+  """
+  enum AccessLevel {
+    public
+    private
+    restricted
+  }
+
+  """
   Represents a skill item
   """
   type Skill {
@@ -127,6 +136,11 @@ export const profileTypeDefs = gql`
     skills: [SkillCategory!]!
 
     """
+    Access level of the profile (public, private, restricted)
+    """
+    accessLevel: AccessLevel!
+
+    """
     Timestamp when the profile was created
     """
     createdAt: String!
@@ -166,6 +180,7 @@ export const profileTypeDefs = gql`
       education: JSON!
       languages: JSON!
       skills: [SkillCategoryInput!]
+      accessLevel: AccessLevel!
     ): Profile!
 
     """
@@ -184,6 +199,7 @@ export const profileTypeDefs = gql`
       education: JSON
       languages: JSON
       skills: [SkillCategoryInput!]
+      accessLevel: AccessLevel
     ): Profile!
   }
 
