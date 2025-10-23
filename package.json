@@ -1,0 +1,35 @@
+{
+  "name": "qrfolio.gql",
+  "version": "1.0.0",
+  "description": "GraphQL + Prisma API for QRFolio",
+  "author": "Riz",
+  "main": "index.js",
+  "scripts": {
+    "dev": "ts-node-dev --respawn src/index.ts",
+    "start": "node dist/index.js",
+    "build": "tsc",
+    "db:push": "prisma db push",
+    "db:migrate": "prisma migrate dev",
+    "db:studio": "prisma studio",
+    "db:generate": "prisma generate",
+    "studio": "npm run db:studio",
+    "sync": "npm run db:push && npm run db:generate",
+    "apollo:studio": "echo 'Open https://studio.apollographql.com/dev to connect to your local server for Apollo Studio.'",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^24.0.13",
+    "prisma": "^6.17.1",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.8.3"
+  },
+  "dependencies": {
+    "@graphql-tools/merge": "^9.0.24",
+    "@prisma/client": "^6.17.1",
+    "apollo-server": "^3.13.0",
+    "chalk": "^4.1.2",
+    "graphql": "^16.11.0"
+  }
+}
