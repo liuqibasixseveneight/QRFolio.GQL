@@ -54,6 +54,16 @@ export type CreateProfileArgs = {
   languages: Language[];
   skills?: SkillCategory[];
   accessLevel: AccessLevel;
+  showName?: boolean;
+  showEmail?: boolean;
+  showPhone?: boolean;
+  showLinkedIn?: boolean;
+  showPortfolio?: boolean;
+  showWorkExperience?: boolean;
+  showEducation?: boolean;
+  showLanguages?: boolean;
+  showSkills?: boolean;
+  permittedUsers?: string[];
 };
 
 export type UpdateProfileArgs = {
@@ -70,4 +80,14 @@ export type UpdateProfileArgs = {
   languages?: Language[];
   skills?: SkillCategory[];
   accessLevel?: AccessLevel;
+  showName?: boolean;
+  showEmail?: boolean;
+  showPhone?: boolean;
+  showLinkedIn?: boolean;
+  showPortfolio?: boolean;
+  showWorkExperience?: boolean;
+  showEducation?: boolean;
+  showLanguages?: boolean;
+  showSkills?: boolean;
+  permittedUsers?: string[];
 };

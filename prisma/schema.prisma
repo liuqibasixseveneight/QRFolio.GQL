@@ -40,6 +40,16 @@ model Profile {
   languages           Json                          // Stores array of language objects
   skills              Json?                         // Stores array of SkillCategory objects with nested skills
   accessLevel         ProfileAccessLevel @default(public)
+  showName            Boolean           @default(true)
+  showEmail           Boolean           @default(true)
+  showPhone           Boolean           @default(true)
+  showLinkedIn        Boolean           @default(true)
+  showPortfolio       Boolean           @default(true)
+  showWorkExperience  Boolean           @default(true)
+  showEducation       Boolean           @default(true)
+  showLanguages       Boolean           @default(true)
+  showSkills          Boolean           @default(true)
+  permittedUsers      String[]          @default([])
   createdAt           DateTime          @default(now())
   updatedAt           DateTime          @updatedAt
 }

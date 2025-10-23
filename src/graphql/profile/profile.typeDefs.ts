@@ -83,7 +83,7 @@ export const profileTypeDefs = gql`
     """
     Full name of the user
     """
-    fullName: String!
+    fullName: String
 
     """
     Phone number - can be either a string (legacy) or structured object
@@ -93,7 +93,7 @@ export const profileTypeDefs = gql`
     """
     Email address
     """
-    email: String!
+    email: String
 
     """
     Optional LinkedIn URL
@@ -108,7 +108,7 @@ export const profileTypeDefs = gql`
     """
     Professional summary text
     """
-    professionalSummary: String!
+    professionalSummary: String
 
     """
     Current availability status
@@ -118,27 +118,45 @@ export const profileTypeDefs = gql`
     """
     Array of work experience objects stored as JSON
     """
-    workExperience: JSON!
+    workExperience: JSON
 
     """
     Array of education objects stored as JSON
     """
-    education: JSON!
+    education: JSON
 
     """
     Array of language proficiency objects stored as JSON
     """
-    languages: JSON!
+    languages: JSON
 
     """
     Array of skill categories with nested skills
     """
-    skills: [SkillCategory!]!
+    skills: [SkillCategory!]
 
     """
     Access level of the profile (public, private, restricted)
     """
     accessLevel: AccessLevel!
+
+    """
+    Privacy settings for profile fields
+    """
+    showName: Boolean!
+    showEmail: Boolean!
+    showPhone: Boolean!
+    showLinkedIn: Boolean!
+    showPortfolio: Boolean!
+    showWorkExperience: Boolean!
+    showEducation: Boolean!
+    showLanguages: Boolean!
+    showSkills: Boolean!
+
+    """
+    Array of user IDs who are permitted to view this profile
+    """
+    permittedUsers: [String!]!
 
     """
     Timestamp when the profile was created
@@ -181,6 +199,16 @@ export const profileTypeDefs = gql`
       languages: JSON!
       skills: [SkillCategoryInput!]
       accessLevel: AccessLevel!
+      showName: Boolean
+      showEmail: Boolean
+      showPhone: Boolean
+      showLinkedIn: Boolean
+      showPortfolio: Boolean
+      showWorkExperience: Boolean
+      showEducation: Boolean
+      showLanguages: Boolean
+      showSkills: Boolean
+      permittedUsers: [String!]
     ): Profile!
 
     """
@@ -200,6 +228,16 @@ export const profileTypeDefs = gql`
       languages: JSON
       skills: [SkillCategoryInput!]
       accessLevel: AccessLevel
+      showName: Boolean
+      showEmail: Boolean
+      showPhone: Boolean
+      showLinkedIn: Boolean
+      showPortfolio: Boolean
+      showWorkExperience: Boolean
+      showEducation: Boolean
+      showLanguages: Boolean
+      showSkills: Boolean
+      permittedUsers: [String!]
     ): Profile!
   }
 

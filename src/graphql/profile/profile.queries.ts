@@ -5,6 +5,63 @@ import type { SkillCategory } from './types';
 const prisma = new PrismaClient();
 
 /**
+ * Creates a dynamic select object for Prisma queries based on show flags
+ * Only includes fields in the database query when their show flag is true
+ */
+function createPrivacySelect(showFlags: any) {
+  const baseSelect: any = {
+    id: true,
+    accessLevel: true,
+    permittedUsers: true,
+    createdAt: true,
+    updatedAt: true,
+  };
+
+  // Only include fields in the select if their show flag is true
+  if (showFlags.showName) {
+    baseSelect.fullName = true;
+  }
+
+  if (showFlags.showEmail) {
+    baseSelect.email = true;
+  }
+
+  if (showFlags.showPhone) {
+    baseSelect.phone = true;
+  }
+
+  if (showFlags.showLinkedIn) {
+    baseSelect.linkedin = true;
+  }
+
+  if (showFlags.showPortfolio) {
+    baseSelect.portfolio = true;
+  }
+
+  // Always include professionalSummary and availability (no show flags for these)
+  baseSelect.professionalSummary = true;
+  baseSelect.availability = true;
+
+  if (showFlags.showWorkExperience) {
+    baseSelect.workExperience = true;
+  }
+
+  if (showFlags.showEducation) {
+    baseSelect.education = true;
+  }
+
+  if (showFlags.showLanguages) {
+    baseSelect.languages = true;
+  }
+
+  if (showFlags.showSkills) {
+    baseSelect.skills = true;
+  }
+
+  return baseSelect;
+}
+
+/**
  * Transforms raw skills JSON from database to GraphQL SkillCategory structure
  * Handles null/undefined values and malformed data gracefully
  */
@@ -43,25 +100,50 @@ export const profileQueries = {
         `${chalk.bgYellow('<< ? >>')} ${chalk.yellow('Fetching all profiles')}`
       );
 
-      const profiles = await prisma.profile.findMany({
+      // First, get all profiles with only show flags to determine what to select
+      const profilesWithFlags = await prisma.profile.findMany({
         select: {
           id: true,
-          fullName: true,
-          phone: true,
-          email: true,
-          linkedin: true,
-          portfolio: true,
-          professionalSummary: true,
-          availability: true,
-          workExperience: true,
-          education: true,
-          languages: true,
-          skills: true,
-          accessLevel: true,
-          createdAt: true,
-          updatedAt: true,
+          showName: true,
+          showEmail: true,
+          showPhone: true,
+          showLinkedIn: true,
+          showPortfolio: true,
+          showWorkExperience: true,
+          showEducation: true,
+          showLanguages: true,
+          showSkills: true,
         },
       });
+
+      // Fetch full profiles with privacy-aware field selection
+      const profiles = await Promise.all(
+        profilesWithFlags.map(async (profileFlags) => {
+          const privacySelect = createPrivacySelect(profileFlags);
+
+          // Always include show flags in the select for this specific profile
+          const fullSelect = {
+            ...privacySelect,
+            showName: true,
+            showEmail: true,
+            showPhone: true,
+            showLinkedIn: true,
+            showPortfolio: true,
+            showWorkExperience: true,
+            showEducation: true,
+            showLanguages: true,
+            showSkills: true,
+            permittedUsers: true,
+            createdAt: true,
+            updatedAt: true,
+          };
+
+          return await prisma.profile.findUnique({
+            where: { id: profileFlags.id },
+            select: fullSelect,
+          });
+        })
+      );
 
       console.log(
         `${chalk.bgGreen('<< ✔ >>')} ${chalk.green(
@@ -70,12 +152,14 @@ export const profileQueries = {
       );
 
       // Transform DateTime fields to ISO strings and skills structure
-      return profiles.map((profile) => ({
-        ...profile,
-        skills: transformSkills(profile.skills),
-        createdAt: profile.createdAt.toISOString(),
-        updatedAt: profile.updatedAt.toISOString(),
-      }));
+      return (profiles as any[])
+        .filter((profile) => profile !== null)
+        .map((profile) => ({
+          ...profile,
+          skills: profile.skills ? transformSkills(profile.skills) : [],
+          createdAt: profile.createdAt.toISOString(),
+          updatedAt: profile.updatedAt.toISOString(),
+        }));
     } catch (error) {
       console.error(
         `${chalk.bgRed('<< ! >>')} ${chalk.red('Error fetching profiles:')}`,
@@ -96,25 +180,53 @@ export const profileQueries = {
         )}`
       );
 
-      const profile = await prisma.profile.findUnique({
+      // First, get the profile's show flags to determine what to select
+      const profileFlags = await prisma.profile.findUnique({
         where: { id: args.id },
         select: {
           id: true,
-          fullName: true,
-          phone: true,
-          email: true,
-          linkedin: true,
-          portfolio: true,
-          professionalSummary: true,
-          availability: true,
-          workExperience: true,
-          education: true,
-          languages: true,
-          skills: true,
-          accessLevel: true,
-          createdAt: true,
-          updatedAt: true,
+          showName: true,
+          showEmail: true,
+          showPhone: true,
+          showLinkedIn: true,
+          showPortfolio: true,
+          showWorkExperience: true,
+          showEducation: true,
+          showLanguages: true,
+          showSkills: true,
         },
+      });
+
+      if (!profileFlags) {
+        console.log(
+          `${chalk.bgRed('<< ✗ >>')} ${chalk.red('Profile not found')}`
+        );
+        return null;
+      }
+
+      // Create privacy-aware select based on show flags
+      const privacySelect = createPrivacySelect(profileFlags);
+
+      // Always include show flags and other required fields
+      const fullSelect = {
+        ...privacySelect,
+        showName: true,
+        showEmail: true,
+        showPhone: true,
+        showLinkedIn: true,
+        showPortfolio: true,
+        showWorkExperience: true,
+        showEducation: true,
+        showLanguages: true,
+        showSkills: true,
+        permittedUsers: true,
+        createdAt: true,
+        updatedAt: true,
+      };
+
+      const profile = await prisma.profile.findUnique({
+        where: { id: args.id },
+        select: fullSelect,
       });
 
       console.log(
@@ -127,10 +239,12 @@ export const profileQueries = {
 
       // Transform DateTime fields to ISO strings and skills structure
       return {
-        ...profile,
-        skills: transformSkills(profile.skills),
-        createdAt: profile.createdAt.toISOString(),
-        updatedAt: profile.updatedAt.toISOString(),
+        ...(profile as any),
+        skills: (profile as any).skills
+          ? transformSkills((profile as any).skills)
+          : [],
+        createdAt: (profile as any).createdAt.toISOString(),
+        updatedAt: (profile as any).updatedAt.toISOString(),
       };
     } catch (error) {
       console.error(
