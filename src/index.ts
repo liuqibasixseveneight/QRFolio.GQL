@@ -1,4 +1,5 @@
 import { ApolloServer } from 'apollo-server';
+import { ApolloServerPluginLandingPageGraphQLPlayground } from 'apollo-server-core';
 import chalk from 'chalk';
 
 import { schema } from './graphql/schema';
@@ -26,6 +27,13 @@ const server = new ApolloServer({
     ],
   },
   introspection: true,
+  plugins: [
+    ApolloServerPluginLandingPageGraphQLPlayground({
+      settings: {
+        'request.credentials': 'include',
+      },
+    }),
+  ],
   context: ({ req }) => {
     return { req };
   },
