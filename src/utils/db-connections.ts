@@ -5,7 +5,7 @@
  * for optimal performance with Supabase connection poolers.
  */
 
-import { prisma, prismaSession, prismaTransaction } from '../lib/prisma';
+import { prisma } from '../lib/prisma';
 
 /**
  * Use Cases for Different Connection Types:
@@ -36,7 +36,7 @@ import { prisma, prismaSession, prismaTransaction } from '../lib/prisma';
  * For API endpoints and quick operations
  */
 export async function getUserById(id: string) {
-  return await prismaTransaction.user.findUnique({
+  return await prisma.user.findUnique({
     where: { id },
   });
 }
@@ -45,7 +45,7 @@ export async function getUserById(id: string) {
  * For long-running operations or background jobs
  */
 export async function processUserProfiles() {
-  return await prismaSession.profile.findMany({
+  return await prisma.profile.findMany({
     where: { accessLevel: 'public' },
   });
 }
@@ -54,7 +54,7 @@ export async function processUserProfiles() {
  * For transactions and complex operations
  */
 export async function createUserWithProfile(userData: any, profileData: any) {
-  return await prismaTransaction.$transaction(async (tx) => {
+  return await prisma.$transaction(async (tx) => {
     const user = await tx.user.create({
       data: userData,
     });
