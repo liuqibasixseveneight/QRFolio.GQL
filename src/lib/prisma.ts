@@ -1,9 +1,5 @@
 import { PrismaClient } from '@prisma/client';
-import {
-  EXTERNAL_DATABASE_URL,
-  SUPABASE_SESSION_POOLER_URL,
-  SUPABASE_TRANSACTION_POOLER_URL,
-} from '../config';
+import { EXTERNAL_DATABASE_URL } from '../config';
 
 // Create a singleton Prisma client instance
 const globalForPrisma = globalThis as unknown as {
@@ -29,7 +25,7 @@ export const prismaSession =
   new PrismaClient({
     datasources: {
       db: {
-        url: SUPABASE_SESSION_POOLER_URL || EXTERNAL_DATABASE_URL,
+        url: EXTERNAL_DATABASE_URL,
       },
     },
   });
@@ -40,7 +36,7 @@ export const prismaTransaction =
   new PrismaClient({
     datasources: {
       db: {
-        url: SUPABASE_TRANSACTION_POOLER_URL || EXTERNAL_DATABASE_URL,
+        url: EXTERNAL_DATABASE_URL,
       },
     },
   });
