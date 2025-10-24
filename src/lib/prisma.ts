@@ -1,25 +1,32 @@
 import { PrismaClient } from '@prisma/client';
-import { EXTERNAL_TRANSACTION_POOLER_DATABASE_URL } from '../config';
+import {
+  EXTERNAL_TRANSACTION_POOLER_DATABASE_URL,
+  EXTERNAL_DATABASE_URL,
+} from '../config';
 
-// Debug logging
-console.log('=== DATABASE CONNECTION DEBUG ===');
-console.log(
-  'EXTERNAL_TRANSACTION_POOLER_DATABASE_URL:',
-  EXTERNAL_TRANSACTION_POOLER_DATABASE_URL ? 'SET' : 'NOT SET'
-);
-console.log(
-  'URL starts with:',
-  EXTERNAL_TRANSACTION_POOLER_DATABASE_URL?.substring(0, 30) + '...'
-);
-console.log('Full URL:', EXTERNAL_TRANSACTION_POOLER_DATABASE_URL);
-console.log('================================');
+// Use direct connection locally, pooler in production
+const databaseUrl =
+  process.env.NODE_ENV === 'production'
+    ? EXTERNAL_TRANSACTION_POOLER_DATABASE_URL
+    : EXTERNAL_DATABASE_URL;
 
-// Force new Prisma client instance (no caching)
-export const prisma = new PrismaClient({
-  datasources: {
-    db: {
-      url: EXTERNAL_TRANSACTION_POOLER_DATABASE_URL,
+// Create a singleton Prisma client instance to prevent multiple connections
+const globalForPrisma = globalThis as unknown as {
+  prisma: PrismaClient | undefined;
+};
+
+// Default Prisma client
+export const prisma =
+  globalForPrisma.prisma ??
+  new PrismaClient({
+    datasources: {
+      db: {
+        url: databaseUrl,
+      },
     },
-  },
-  log: ['query', 'info', 'warn', 'error'],
-});
+    log: ['query', 'info', 'warn', 'error'],
+  });
+
+if (process.env.NODE_ENV !== 'production') {
+  globalForPrisma.prisma = prisma;
+}

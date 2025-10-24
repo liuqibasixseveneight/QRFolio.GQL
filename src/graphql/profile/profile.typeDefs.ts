@@ -192,11 +192,11 @@ export const profileTypeDefs = gql`
       email: String!
       linkedin: String
       portfolio: String
-      professionalSummary: String!
+      professionalSummary: String
       availability: Availability
-      workExperience: JSON!
-      education: JSON!
-      languages: JSON!
+      workExperience: JSON
+      education: JSON
+      languages: JSON
       skills: [SkillCategoryInput!]
       accessLevel: AccessLevel!
       showName: Boolean
