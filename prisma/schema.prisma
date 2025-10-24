@@ -10,9 +10,7 @@ generator client {
 
 datasource db {
   provider    = "postgresql"
-  // url      = env("EXTERNAL_DATABASE_URL")
-  url         = env("SUPABASE_TRANSACTION_POOLER_URL")
-  directUrl   = env("SUPABASE_SESSION_POOLER_URL")
+  url      = env("EXTERNAL_DATABASE_URL")
 }
 
 model User {
