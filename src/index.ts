@@ -2,13 +2,18 @@ import { ApolloServer } from 'apollo-server';
 import chalk from 'chalk';
 
 import { schema } from './graphql/schema';
-import { SERVER_PORT } from './config';
+import { SERVER_PORT, UI_PRODUCTION_URL } from './config';
 
 const server = new ApolloServer({
   typeDefs: schema.typeDefs,
   resolvers: schema.resolvers,
   cors: {
-    origin: true,
+    origin: [
+      UI_PRODUCTION_URL,
+      'http://localhost:3000',
+      'http://localhost:3001',
+      'http://localhost:5173',
+    ],
     credentials: true,
     methods: ['GET', 'POST', 'OPTIONS'],
     allowedHeaders: [
