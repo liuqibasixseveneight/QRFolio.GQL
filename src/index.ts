@@ -12,6 +12,7 @@ const server = new ApolloServer({
       UI_PRODUCTION_URL,
       'http://localhost:3000', // For local development
       'http://localhost:3001', // Alternative local port
+      'http://localhost:5173', // Vite default port
     ],
     credentials: true,
     methods: ['GET', 'POST', 'OPTIONS'],
@@ -19,6 +20,9 @@ const server = new ApolloServer({
       'Content-Type',
       'Authorization',
       'Apollo-Require-Preflight',
+      'X-Requested-With',
+      'Accept',
+      'Origin',
     ],
   },
 });
