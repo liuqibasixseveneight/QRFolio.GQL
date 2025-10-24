@@ -33,11 +33,11 @@ model Profile {
   email               String
   linkedin            String?  
   portfolio           String?  
-  professionalSummary String
+  professionalSummary String?
   availability        String?
-  workExperience      Json                          // Stores array of workExperience objects
-  education           Json                          // Stores array of education objects
-  languages           Json                          // Stores array of language objects
+  workExperience      Json?                         // Stores array of workExperience objects
+  education           Json?                         // Stores array of education objects
+  languages           Json?                         // Stores array of language objects
   skills              Json?                         // Stores array of SkillCategory objects with nested skills
   accessLevel         ProfileAccessLevel @default(public)
   showName            Boolean           @default(true)
