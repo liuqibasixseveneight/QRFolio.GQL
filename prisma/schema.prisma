@@ -9,12 +9,10 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("EXTERNAL_DATABASE_URL")
-  // Note: For production, consider using:
-  // - SUPABASE_SESSION_POOLER_URL for long-running sessions
-  // - SUPABASE_TRANSACTION_POOLER_URL for short-lived transactions
-  // These are configured in src/lib/prisma.ts
+  provider    = "postgresql"
+  // url      = env("EXTERNAL_DATABASE_URL")
+  url         = env("SUPABASE_TRANSACTION_POOLER_URL")
+  directUrl   = env("SUPABASE_SESSION_POOLER_URL")
 }
 
 model User {
