@@ -113,6 +113,7 @@ export const profileQueries = {
           showEducation: true,
           showLanguages: true,
           showSkills: true,
+          accessRequests: true,
         },
       });
 
@@ -134,6 +135,7 @@ export const profileQueries = {
             showLanguages: true,
             showSkills: true,
             permittedUsers: true,
+            accessRequests: true,
             createdAt: true,
             updatedAt: true,
           };
@@ -157,6 +159,7 @@ export const profileQueries = {
         .map((profile) => ({
           ...profile,
           skills: profile.skills ? transformSkills(profile.skills) : [],
+          accessRequests: profile.accessRequests || [],
           createdAt: profile.createdAt.toISOString(),
           updatedAt: profile.updatedAt.toISOString(),
         }));
@@ -194,6 +197,7 @@ export const profileQueries = {
           showEducation: true,
           showLanguages: true,
           showSkills: true,
+          accessRequests: true,
         },
       });
 
@@ -220,6 +224,7 @@ export const profileQueries = {
         showLanguages: true,
         showSkills: true,
         permittedUsers: true,
+        accessRequests: true,
         createdAt: true,
         updatedAt: true,
       };
@@ -235,7 +240,9 @@ export const profileQueries = {
           : `${chalk.bgRed('<< ✗ >>')} ${chalk.red('Profile not found')}`
       );
 
-      if (!profile) return null;
+      if (!profile) {
+        return null;
+      }
 
       // Transform DateTime fields to ISO strings and skills structure
       return {
@@ -243,6 +250,7 @@ export const profileQueries = {
         skills: (profile as any).skills
           ? transformSkills((profile as any).skills)
           : [],
+        accessRequests: (profile as any).accessRequests || [],
         createdAt: (profile as any).createdAt.toISOString(),
         updatedAt: (profile as any).updatedAt.toISOString(),
       };
@@ -254,6 +262,78 @@ export const profileQueries = {
       const errorMessage =
         error instanceof Error ? error.message : 'Unknown error occurred';
       throw new Error(`Failed to fetch profile: ${errorMessage}`);
+    }
+  },
+
+  getProfileSettings: async (_: any, args: { id: string }) => {
+    try {
+      console.log(
+        `${chalk.bgYellow('<< ? >>')} ${chalk.yellow(
+          `Fetching profile settings for ID: ${args.id}`
+        )}`
+      );
+
+      // Fetch only the settings-related fields
+      const profile = await prisma.profile.findUnique({
+        where: { id: args.id },
+        select: {
+          id: true,
+          accessLevel: true,
+          permittedUsers: true,
+          accessRequests: true,
+          showName: true,
+          showEmail: true,
+          showPhone: true,
+          showLinkedIn: true,
+          showPortfolio: true,
+          showWorkExperience: true,
+          showEducation: true,
+          showLanguages: true,
+          showSkills: true,
+          createdAt: true,
+          updatedAt: true,
+        },
+      });
+
+      if (!profile) {
+        console.log(
+          `${chalk.bgRed('<< ✗ >>')} ${chalk.red('Profile not found')}`
+        );
+        return null;
+      }
+
+      console.log(
+        `${chalk.bgGreen('<< ✔ >>')} ${chalk.green('Profile settings found')}`
+      );
+
+      // Return the profile settings with visibility mapped from accessLevel
+      return {
+        id: profile.id,
+        visibility: profile.accessLevel,
+        permittedUsers: profile.permittedUsers || [],
+        accessRequests: profile.accessRequests || [],
+        showName: profile.showName,
+        showEmail: profile.showEmail,
+        showPhone: profile.showPhone,
+        showLinkedIn: profile.showLinkedIn,
+        showPortfolio: profile.showPortfolio,
+        showWorkExperience: profile.showWorkExperience,
+        showEducation: profile.showEducation,
+        showLanguages: profile.showLanguages,
+        showSkills: profile.showSkills,
+        createdAt: profile.createdAt.toISOString(),
+        updatedAt: profile.updatedAt.toISOString(),
+      };
+    } catch (error) {
+      console.error(
+        `${chalk.bgRed('<< ! >>')} ${chalk.red(
+          'Error fetching profile settings:'
+        )}`,
+        error
+      );
+      const errorMessage =
+        error instanceof Error ? error.message : 'Unknown error occurred';
+      throw new Error(`Failed to fetch profile settings: ${errorMessage}`);
     }
   },
 };
