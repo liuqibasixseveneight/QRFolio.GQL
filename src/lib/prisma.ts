@@ -5,10 +5,18 @@ const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined;
 };
 
-// Prisma client - uses URL from schema.prisma (EXTERNAL_TRANSACTION_POOLER_DATABASE_URL)
+const databaseUrl = process.env.EXTERNAL_TRANSACTION_POOLER_DATABASE_URL;
+
 export const prisma =
   globalForPrisma.prisma ??
   new PrismaClient({
+    datasources: databaseUrl
+      ? {
+          db: {
+            url: databaseUrl,
+          },
+        }
+      : undefined,
     log: ['query', 'info', 'warn', 'error'],
   });
 
