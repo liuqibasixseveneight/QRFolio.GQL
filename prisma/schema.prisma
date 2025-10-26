@@ -50,6 +50,7 @@ model Profile {
   showLanguages       Boolean           @default(true)
   showSkills          Boolean           @default(true)
   permittedUsers      String[]          @default([])
+  accessRequests      String[]          @default([])
   createdAt           DateTime          @default(now())
   updatedAt           DateTime          @updatedAt
 }
