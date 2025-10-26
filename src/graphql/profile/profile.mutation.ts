@@ -94,7 +94,6 @@ export const profileMutations = {
         showLanguages: args.showLanguages ?? true,
         showSkills: args.showSkills ?? true,
         permittedUsers: validatedPermittedUsers,
-        accessRequests: args.accessRequests || [],
       },
     });
 
