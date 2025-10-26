@@ -1,4 +1,6 @@
-import { prisma } from '../../lib/prisma';
+import { PrismaClient } from '@prisma/client';
+
+const prisma = new PrismaClient();
 
 export const userMutations = {
   createUser: async (_: any, args: { email: string; name?: string }) => {

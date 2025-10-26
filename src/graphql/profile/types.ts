@@ -64,6 +64,7 @@ export type CreateProfileArgs = {
   showLanguages?: boolean;
   showSkills?: boolean;
   permittedUsers?: string[];
+  accessRequests?: string[];
 };
 
 export type UpdateProfileArgs = {
@@ -90,4 +91,5 @@ export type UpdateProfileArgs = {
   showLanguages?: boolean;
   showSkills?: boolean;
   permittedUsers?: string[];
+  accessRequests?: string[];
 };

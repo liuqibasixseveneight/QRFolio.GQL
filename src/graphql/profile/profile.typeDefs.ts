@@ -72,6 +72,86 @@ export const profileTypeDefs = gql`
   }
 
   """
+  Represents profile settings including privacy and access control
+  """
+  type ProfileSettings {
+    """
+    Unique identifier of the profile (same as user ID)
+    """
+    id: ID!
+
+    """
+    Profile visibility level (public, private, restricted)
+    """
+    visibility: AccessLevel!
+
+    """
+    Array of user IDs who are permitted to view this profile
+    """
+    permittedUsers: [String!]!
+
+    """
+    Array of user IDs who have requested access to this profile
+    """
+    accessRequests: [String!]!
+
+    """
+    Whether to show full name
+    """
+    showName: Boolean!
+
+    """
+    Whether to show email
+    """
+    showEmail: Boolean!
+
+    """
+    Whether to show phone
+    """
+    showPhone: Boolean!
+
+    """
+    Whether to show LinkedIn
+    """
+    showLinkedIn: Boolean!
+
+    """
+    Whether to show portfolio
+    """
+    showPortfolio: Boolean!
+
+    """
+    Whether to show work experience
+    """
+    showWorkExperience: Boolean!
+
+    """
+    Whether to show education
+    """
+    showEducation: Boolean!
+
+    """
+    Whether to show languages
+    """
+    showLanguages: Boolean!
+
+    """
+    Whether to show skills
+    """
+    showSkills: Boolean!
+
+    """
+    Timestamp when the profile was created
+    """
+    createdAt: String!
+
+    """
+    Timestamp when the profile was last updated
+    """
+    updatedAt: String!
+  }
+
+  """
   Represents a user's profile containing resume and personal information
   """
   type Profile {
@@ -159,6 +239,11 @@ export const profileTypeDefs = gql`
     permittedUsers: [String!]!
 
     """
+    Array of user IDs who have requested access to this profile
+    """
+    accessRequests: [String!]!
+
+    """
     Timestamp when the profile was created
     """
     createdAt: String!
@@ -179,6 +264,11 @@ export const profileTypeDefs = gql`
     Retrieve all profiles
     """
     profiles: [Profile!]!
+
+    """
+    Retrieve profile settings including privacy and access control for a specific profile
+    """
+    getProfileSettings(id: ID!): ProfileSettings
   }
 
   type Mutation {
@@ -209,6 +299,7 @@ export const profileTypeDefs = gql`
       showLanguages: Boolean
       showSkills: Boolean
       permittedUsers: [String!]
+      accessRequests: [String!]
     ): Profile!
 
     """
@@ -238,7 +329,27 @@ export const profileTypeDefs = gql`
       showLanguages: Boolean
       showSkills: Boolean
       permittedUsers: [String!]
+      accessRequests: [String!]
     ): Profile!
+
+    """
+    Update profile settings including privacy and access control
+    """
+    updateProfileSettings(
+      id: ID!
+      visibility: AccessLevel
+      permittedUsers: [String!]
+      accessRequests: [String!]
+      showName: Boolean
+      showEmail: Boolean
+      showPhone: Boolean
+      showLinkedIn: Boolean
+      showPortfolio: Boolean
+      showWorkExperience: Boolean
+      showEducation: Boolean
+      showLanguages: Boolean
+      showSkills: Boolean
+    ): ProfileSettings!
   }
 
   """

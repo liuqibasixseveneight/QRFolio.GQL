@@ -1,9 +1,12 @@
-import { prisma } from '../../lib/prisma';
+import { PrismaClient } from '@prisma/client';
+
 import type {
   CreateProfileArgs,
   UpdateProfileArgs,
   SkillCategory,
 } from './types';
+
+const prisma = new PrismaClient();
 
 /**
  * Validates that permittedUsers is an array of valid user IDs
@@ -91,6 +94,7 @@ export const profileMutations = {
         showLanguages: args.showLanguages ?? true,
         showSkills: args.showSkills ?? true,
         permittedUsers: validatedPermittedUsers,
+        accessRequests: args.accessRequests || [],
       },
     });
 
@@ -98,6 +102,7 @@ export const profileMutations = {
     return {
       ...profile,
       skills: transformSkills(profile.skills),
+      accessRequests: profile.accessRequests || [],
       createdAt: profile.createdAt.toISOString(),
       updatedAt: profile.updatedAt.toISOString(),
     };
@@ -127,6 +132,80 @@ export const profileMutations = {
     return {
       ...profile,
       skills: transformSkills(profile.skills),
+      accessRequests: profile.accessRequests || [],
+      createdAt: profile.createdAt.toISOString(),
+      updatedAt: profile.updatedAt.toISOString(),
+    };
+  },
+
+  updateProfileSettings: async (_: any, args: any) => {
+    const { id, visibility, ...updateData } = args;
+
+    // Build the update object
+    const updateObject: any = {};
+
+    // Map visibility to accessLevel for database
+    if (visibility !== undefined) {
+      updateObject.accessLevel = visibility;
+    }
+
+    // Validate and set permittedUsers if provided
+    if (updateData.permittedUsers !== undefined) {
+      updateObject.permittedUsers = validatePermittedUsers(
+        updateData.permittedUsers
+      );
+    }
+
+    // Set accessRequests if provided
+    if (updateData.accessRequests !== undefined) {
+      updateObject.accessRequests = Array.isArray(updateData.accessRequests)
+        ? updateData.accessRequests.filter(
+            (id: any) => id && typeof id === 'string'
+          )
+        : [];
+    }
+
+    // Add all the show flags if provided
+    if (updateData.showName !== undefined)
+      updateObject.showName = updateData.showName;
+    if (updateData.showEmail !== undefined)
+      updateObject.showEmail = updateData.showEmail;
+    if (updateData.showPhone !== undefined)
+      updateObject.showPhone = updateData.showPhone;
+    if (updateData.showLinkedIn !== undefined)
+      updateObject.showLinkedIn = updateData.showLinkedIn;
+    if (updateData.showPortfolio !== undefined)
+      updateObject.showPortfolio = updateData.showPortfolio;
+    if (updateData.showWorkExperience !== undefined)
+      updateObject.showWorkExperience = updateData.showWorkExperience;
+    if (updateData.showEducation !== undefined)
+      updateObject.showEducation = updateData.showEducation;
+    if (updateData.showLanguages !== undefined)
+      updateObject.showLanguages = updateData.showLanguages;
+    if (updateData.showSkills !== undefined)
+      updateObject.showSkills = updateData.showSkills;
+
+    // Update the profile
+    const profile = await prisma.profile.update({
+      where: { id },
+      data: updateObject,
+    });
+
+    // Return the profile settings in the same format as getProfileSettings
+    return {
+      id: profile.id,
+      visibility: profile.accessLevel,
+      permittedUsers: profile.permittedUsers || [],
+      accessRequests: profile.accessRequests || [],
+      showName: profile.showName,
+      showEmail: profile.showEmail,
+      showPhone: profile.showPhone,
+      showLinkedIn: profile.showLinkedIn,
+      showPortfolio: profile.showPortfolio,
+      showWorkExperience: profile.showWorkExperience,
+      showEducation: profile.showEducation,
+      showLanguages: profile.showLanguages,
+      showSkills: profile.showSkills,
       createdAt: profile.createdAt.toISOString(),
       updatedAt: profile.updatedAt.toISOString(),
     };
