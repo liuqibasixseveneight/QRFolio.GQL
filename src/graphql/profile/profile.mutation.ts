@@ -1,12 +1,9 @@
-import { PrismaClient } from '@prisma/client';
-
 import type {
   CreateProfileArgs,
   UpdateProfileArgs,
   SkillCategory,
 } from './types';
-
-const prisma = new PrismaClient();
+import { prisma } from '../../lib/prisma';
 
 /**
  * Validates that permittedUsers is an array of valid user IDs

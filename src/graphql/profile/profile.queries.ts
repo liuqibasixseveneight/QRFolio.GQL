@@ -1,8 +1,6 @@
-import { PrismaClient } from '@prisma/client';
 import chalk from 'chalk';
 import type { SkillCategory } from './types';
-
-const prisma = new PrismaClient();
+import { prisma } from '../../lib/prisma';
 
 /**
  * Creates a dynamic select object for Prisma queries based on show flags
