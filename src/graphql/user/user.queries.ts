@@ -75,13 +75,13 @@ export const userQueries = {
       // Create a map of profile fullNames by ID
       const profileMap = new Map<string, string | null>();
       profiles.forEach((profile) => {
-        profileMap.set(profile.id, profile.fullName || null);
+        profileMap.set(profile.id, profile.fullName ?? null);
       });
 
       // Create a map of user names by ID
       const userMap = new Map<string, string | null>();
       users.forEach((user) => {
-        userMap.set(user.id, user.name || null);
+        userMap.set(user.id, user.name ?? null);
       });
 
       // Build result array, preserving the order of input IDs
@@ -89,7 +89,7 @@ export const userQueries = {
         .map((userId) => {
           // Prefer fullName from profile, fallback to name from user
           const fullName =
-            profileMap.get(userId) || userMap.get(userId) || null;
+            profileMap.get(userId) ?? userMap.get(userId) ?? null;
 
           // Only return if user exists
           if (userMap.has(userId) || profileMap.has(userId)) {
